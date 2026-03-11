@@ -5,4 +5,4 @@ fi
 
 # make cd case-INsensitive
 set completion-ignore-case
-. "$HOME/.cargo/env"
+[ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"

@@ -63,7 +63,6 @@ plugins=(
   zsh-syntax-highlighting
   zsh-autosuggestions
   tmux
-  wakatime
 )
 
 # git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
@@ -74,8 +73,10 @@ plugins=(
 # User configuration
 # export MANPATH="/usr/local/man:$MANPATH"
 
-source $ZSH/oh-my-zsh.sh
-source ~/dotfiles/zsh/oh-my-zsh/iterm2.zsh
+if [ -f "$ZSH/oh-my-zsh.sh" ]; then
+  source "$ZSH/oh-my-zsh.sh"
+  [ -f ~/dotfiles/zsh/oh-my-zsh/iterm2.zsh ] && source ~/dotfiles/zsh/oh-my-zsh/iterm2.zsh
+fi
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
@@ -237,12 +238,13 @@ alias iterm-dark-mode="i"
 
 
 # npm/make/brew autocompletions are super slow. Disable them so that auto-fu's
-# completion doesn't trigger for these
+# completion doesn't trigger for these (compdef 由 oh-my-zsh 提供)
 noopt() {}
-compdef noopt npm make brew
-# enable completion for these commands.
-# See https://github.com/zsh-users/zsh-completions/blob/master/zsh-completions-howto.org#completing-generic-gnu-commands
-compdef _gnu_generic bsc bsb ocamlc yarn
+if (( $+functions[compdef] )); then
+  compdef noopt npm make brew
+  # See https://github.com/zsh-users/zsh-completions/blob/master/zsh-completions-howto.org#completing-generic-gnu-commands
+  compdef _gnu_generic bsc bsb ocamlc yarn
+fi
 
 export PNPM_HOME="/Users/derek/Library/pnpm"
 export PATH="$PNPM_HOME:$PATH"
@@ -281,3 +283,5 @@ case ":$PATH:" in
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 # pnpm end
+
+[[ "$TERM_PROGRAM" == "kiro" ]] && . "$(kiro --locate-shell-integration-path zsh)"
