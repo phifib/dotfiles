@@ -5,6 +5,7 @@
   editor = vim
   autocrlf = input
 	excludesfile = /Users/derek/.gitignore
+	quotepath = false
   #safecrlf = false
 
 [alias]
